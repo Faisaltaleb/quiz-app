@@ -148,6 +148,7 @@ h1 {
   #welcome-message {
     font-size: 1.2rem;
     margin: 10px 0;
+    text-align: center;
   }
   
   button {
@@ -199,4 +200,74 @@ h1 {
   .quiz-item h3 {
     margin: 10px 0;
     font-size: 1.2rem;
+  }
+
+#quiz-page {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  header {
+    background: linear-gradient(135deg, #7e57c2, #673ab7);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  header h1 {
+    font-size: 2.5rem;
+  }
+  
+  main {
+    text-align: right;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+ 
+form div {
+    margin-bottom: 20px;
+  }
+  
+  form p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+
+  
+  form label {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  
+  input[type="radio"] {
+    order: 1; 
+    margin-right: 10px; 
+    cursor: pointer;
+  }
+  
+  
+  button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #673ab7, #5e35b1);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #5e35b1, #4a148c);
   }

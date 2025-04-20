@@ -35,11 +35,78 @@ function register() {
     location.href = 'index.html';  
     }
     
-localStorage.setItem('quizzes', JSON.stringify([
-        { id: 1, title: "General Knowledge Quiz", description: "Test your knowledge on a variety of topics!" },
-        { id: 2, title: "Science Quiz", description: "Dive into the world of science and discovery." },
-        { id: 3, title: "History Quiz", description: "Challenge your knowledge of historical events!" }
- ]));
+
+const mockQuizzes = [
+    {
+      id: 1,
+      title: "General Knowledge Quiz",
+      description: "Test your knowledge on a variety of topics!",
+      questions: [
+        { 
+          text: "What is the capital of France?", 
+          options: ["Berlin", "Madrid", "Paris", "Rome"], 
+          answer: 2 
+        },
+        { 
+          text: "Which planet is known as the Red Planet?", 
+          options: ["Earth", "Mars", "Jupiter", "Venus"], 
+          answer: 1 
+        },
+        { 
+          text: "What is the largest ocean on Earth?", 
+          options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Arctic Ocean"], 
+          answer: 2 
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Science Quiz",
+      description: "Dive into the world of science and discovery.",
+      questions: [
+        { 
+          text: "What is the chemical symbol for water?", 
+          options: ["O2", "H2O", "CO2", "HO"], 
+          answer: 1 
+        },
+        { 
+          text: "What gas do plants absorb during photosynthesis?", 
+          options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], 
+          answer: 2 
+        },
+        { 
+          text: "What is the speed of light?", 
+          options: ["299,792 km/s", "150,000 km/s", "1,080,000 km/h", "670,616 km/h"], 
+          answer: 0 
+        }
+      ]
+    },
+    {
+      id: 3,
+      title: "History Quiz",
+      description: "Explore the events that shaped our world.",
+      questions: [
+        { 
+          text: "Who was the first President of the United States?", 
+          options: ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"], 
+          answer: 2 
+        },
+        { 
+          text: "In which year did World War II end?", 
+          options: ["1940", "1945", "1939", "1942"], 
+          answer: 1 
+        },
+        { 
+          text: "Who discovered America?", 
+          options: ["Christopher Columbus", "Leif Erikson", "Amerigo Vespucci", "Ferdinand Magellan"], 
+          answer: 2
+        }
+      ]
+    }
+  ];
+  
+  localStorage.setItem('quizzes', JSON.stringify(mockQuizzes));
+
   
 
   if (!localStorage.getItem('quizzes')) {
@@ -65,9 +132,11 @@ localStorage.setItem('quizzes', JSON.stringify([
   
 
   function startQuiz(quizId) {
-    alert(`Starting Quiz ID: ${quizId}`);
-   
-  }
+     alert(`Starting Quiz ID: ${quizId}`);
+     localStorage.setItem('currentQuizId', quizId); 
+     location.href = 'quiz.html'; //
+      }
+      
   
   
   function logout() {
@@ -78,4 +147,60 @@ localStorage.setItem('quizzes', JSON.stringify([
   
   if (document.getElementById('home-page')) {
     loadHomePage();
+  }
+
+  function loadQuizPage() {
+    const quizId = localStorage.getItem('currentQuizId');
+    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
+    const quiz = quizzes.find(q => q.id === parseInt(quizId));
+  
+    if (quiz) {
+      document.getElementById('quiz-title').innerText = quiz.title;
+      document.getElementById('quiz-description').innerText = quiz.description;
+
+      const quizForm = document.getElementById('quiz-form');
+      quizForm.innerHTML = quiz.questions.map((question, index) => `
+        <div>
+          <p><strong>${index + 1}. ${question.text}</strong></p>
+          ${question.options.map((option, optionIndex) => `
+            <label>
+              <input type="radio" name="question${index}" value="${optionIndex}"> ${option}
+            </label>
+          `).join('')}
+        </div>
+      `).join('');
+    } else {
+      alert("Quiz not found!");
+    }
+  }
+  function submitQuiz() {
+    const quizId = localStorage.getItem('currentQuizId');
+    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
+    const quiz = quizzes.find(q => q.id === parseInt(quizId));
+  
+    let score = 0;
+  
+    quiz.questions.forEach((question, index) => {
+      const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+      if (selectedOption && parseInt(selectedOption.value) === question.answer) {
+        score++;
+      }
+    });
+  
+    alert(`Your score is ${score} out of ${quiz.questions.length}`);
+  
+    const currentUser = localStorage.getItem('currentUser');
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.email === currentUser);
+  
+    if (user) {
+      user.scores = user.scores || [];
+      user.scores.push({ quiz: quiz.title, score });
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    location.href = 'home.html';
+  }
+  if (document.getElementById('quiz-page')) {
+    loadQuizPage();
   }
