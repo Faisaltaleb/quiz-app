@@ -12,3 +12,34 @@ function login() {
         else {
             alert('Invalid email or password!');}
 }
+
+
+
+function register() {
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('register-confirm-password').value;
+    if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    if (users.some(user => user.email === email)) {
+        alert('Email is already registered!');
+        return;
+      }
+    users.push({ email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Registration successful!');
+    location.href = 'index.html';  
+
+
+
+
+
+
+
+
+
+
+}
