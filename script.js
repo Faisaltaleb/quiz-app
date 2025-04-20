@@ -34,3 +34,31 @@ function register() {
     alert('Registration successful!');
     location.href = 'index.html';  
     }
+
+
+    const quizzes = [
+        { title: "General Knowledge Quiz", id: 1 },
+        { title: "Science Quiz", id: 2 },
+        { title: "History Quiz", id: 3 }
+      ];
+      function loadHomePage() {
+        const currentUser = localStorage.getItem('currentUser');
+        document.getElementById('welcome-message').innerText = `Hello, ${currentUser}`;
+      
+        const quizList = document.getElementById('quiz-list');
+        quizList.innerHTML = quizzes.map(quiz => `
+          <div class="quiz-item" onclick="startQuiz(${quiz.id})">
+            <h3>${quiz.title}</h3>
+          </div>
+        `).join('');
+      }
+      function startQuiz(quizId) {
+        alert(`Starting Quiz ID: ${quizId}`);
+      }
+      function logout() {
+        localStorage.removeItem('currentUser'); 
+        location.href = 'index.html'; 
+      }
+      if (document.getElementById('home-page')) {
+        loadHomePage();
+      }
