@@ -32,14 +32,4 @@ function register() {
     localStorage.setItem('users', JSON.stringify(users));
     alert('Registration successful!');
     location.href = 'index.html';  
-
-
-
-
-
-
-
-
-
-
-}
+    }
