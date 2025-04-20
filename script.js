@@ -8,7 +8,8 @@ function login() {
     alert('Welcome Admin!');}
     else if (users.some(user => user.email === email && user.password === password)) {
         alert(`Welcome, ${email}`);
-        localStorage.setItem('currentUser', email);}
+        localStorage.setItem('currentUser', email);
+        location.href = 'home.html';}
         else {
             alert('Invalid email or password!');}
 }
