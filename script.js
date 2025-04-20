@@ -34,31 +34,48 @@ function register() {
     alert('Registration successful!');
     location.href = 'index.html';  
     }
+    
+localStorage.setItem('quizzes', JSON.stringify([
+        { id: 1, title: "General Knowledge Quiz", description: "Test your knowledge on a variety of topics!" },
+        { id: 2, title: "Science Quiz", description: "Dive into the world of science and discovery." },
+        { id: 3, title: "History Quiz", description: "Challenge your knowledge of historical events!" }
+ ]));
+  
 
+  if (!localStorage.getItem('quizzes')) {
+    localStorage.setItem('quizzes', JSON.stringify(mockQuizzes));
+  }
+  
+  function loadHomePage() {
+   
+    const currentUser = localStorage.getItem('currentUser');
+    document.getElementById('welcome-message').innerText = `Hello, ${currentUser}`;
+  
+    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
+    const quizList = document.getElementById('quiz-list');
+  
 
-    const quizzes = [
-        { title: "General Knowledge Quiz", id: 1 },
-        { title: "Science Quiz", id: 2 },
-        { title: "History Quiz", id: 3 }
-      ];
-      function loadHomePage() {
-        const currentUser = localStorage.getItem('currentUser');
-        document.getElementById('welcome-message').innerText = `Hello, ${currentUser}`;
-      
-        const quizList = document.getElementById('quiz-list');
-        quizList.innerHTML = quizzes.map(quiz => `
-          <div class="quiz-item" onclick="startQuiz(${quiz.id})">
-            <h3>${quiz.title}</h3>
-          </div>
-        `).join('');
-      }
-      function startQuiz(quizId) {
-        alert(`Starting Quiz ID: ${quizId}`);
-      }
-      function logout() {
-        localStorage.removeItem('currentUser'); 
-        location.href = 'index.html'; 
-      }
-      if (document.getElementById('home-page')) {
-        loadHomePage();
-      }
+    quizList.innerHTML = quizzes.map(quiz => `
+      <div class="quiz-item" onclick="startQuiz(${quiz.id})">
+        <h3>${quiz.title}</h3>
+        <p>${quiz.description}</p>
+      </div>
+    `).join('');
+  }
+  
+
+  function startQuiz(quizId) {
+    alert(`Starting Quiz ID: ${quizId}`);
+   
+  }
+  
+  
+  function logout() {
+    localStorage.removeItem('currentUser'); 
+    location.href = 'index.html'; 
+  }
+  
+  
+  if (document.getElementById('home-page')) {
+    loadHomePage();
+  }
