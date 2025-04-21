@@ -204,3 +204,17 @@ const mockQuizzes = [
   if (document.getElementById('quiz-page')) {
     loadQuizPage();
   }
+
+function loadDashboard(){
+  const users = JSON.parse(localStorage.getItem('user')) || []
+  const tableBody = document.querySelector('#users-table tbbody');
+
+  tableBody.innerHTML = users.map(user => `
+    <tr>
+      <td>${user.email}</td>
+      <td>${user.scores ? user.scores.map(score => `${score.quiz}: ${score.score}`).join(', ') : 'No scores yet'}</td>
+    </tr>
+  `).join('');
+
+}
+
