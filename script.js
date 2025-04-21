@@ -211,21 +211,28 @@ const mockQuizzes = [
   }
 
   function loadDashboard() {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const tableBody = document.querySelector('#users-table tbody');
-
-    tableBody.innerHTML = users.map(user => {
+    const users = JSON.parse(localStorage.getItem('users')) || []; 
+  
+   
+    const sortedUsers = users.map(user => {
       const totalScore = user.scores
         ? user.scores.reduce((sum, score) => sum + score.score, 0) 
-        : 0;
-      return `
-        <tr>
-          <td>${user.email}</td>
-          <td>${totalScore} points</td>
-        </tr>
-      `;
-    }).join('');
+        : 0; 
+      return { ...user, totalScore }; 
+    }).sort((a, b) => b.totalScore - a.totalScore); 
+  
+ 
+    const tableBody = document.querySelector('#users-table tbody');
+  
+  
+    tableBody.innerHTML = sortedUsers.map(user => `
+      <tr>
+        <td>${user.email}</td>
+        <td>${user.totalScore} points</td> <!-- Display total points -->
+      </tr>
+    `).join('');
   }
+ 
   function logout() {
     localStorage.removeItem('currentUser');
     location.href = 'index.html';
