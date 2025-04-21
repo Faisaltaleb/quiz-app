@@ -222,3 +222,7 @@ function logout() {
   localStorage.removeItem('currentUser');
   location.href= 'index.html';
 }
+
+if (document.getElementById('dashboard-page')){
+  loadDashboard();
+}
