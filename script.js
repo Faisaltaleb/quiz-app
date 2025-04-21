@@ -5,7 +5,9 @@ function login() {
     const users = JSON.parse(localStorage.getItem('users')) || [];
 
     if (email === 'admin@quiz.com' && password === 'admin123') {
-    alert('Welcome Admin!');}
+    alert('Welcome Admin!');
+  location.href='dashboard.html'}
+
     else if (users.some(user => user.email === email && user.password === password)) {
         alert(`Welcome, ${email}`);
         localStorage.setItem('currentUser', email);
