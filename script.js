@@ -5,8 +5,11 @@ function login() {
     const users = JSON.parse(localStorage.getItem('users')) || [];
 
     if (email === 'admin@quiz.com' && password === 'admin123') {
-    alert('Welcome Admin!');
-  location.href='dashboard.html'}
+      alert('Welcome Admin!');
+      location.href = 'dashboard.html'; 
+      return;
+    }
+  
 
     else if (users.some(user => user.email === email && user.password === password)) {
         alert(`Welcome, ${email}`);
@@ -207,24 +210,26 @@ const mockQuizzes = [
     loadQuizPage();
   }
 
-function loadDashboard(){
-  const users = JSON.parse(localStorage.getItem('user')) || []
-  const tableBody = document.querySelector('#users-table tbbody');
+  function loadDashboard() {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const tableBody = document.querySelector('#users-table tbody');
 
-  tableBody.innerHTML = users.map(user => `
-    <tr>
-      <td>${user.email}</td>
-      <td>${user.scores ? user.scores.map(score => `${score.quiz}: ${score.score}`).join(', ') : 'No scores yet'}</td>
-    </tr>
-  `).join('');
-
-}
-
-function logout() {
-  localStorage.removeItem('currentUser');
-  location.href= 'index.html';
-}
-
-if (document.getElementById('dashboard-page')){
-  loadDashboard();
-}
+    tableBody.innerHTML = users.map(user => {
+      const totalScore = user.scores
+        ? user.scores.reduce((sum, score) => sum + score.score, 0) 
+        : 0;
+      return `
+        <tr>
+          <td>${user.email}</td>
+          <td>${totalScore} points</td>
+        </tr>
+      `;
+    }).join('');
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    location.href = 'index.html';
+  }
+  if (document.getElementById('dashboard-page')) {
+    loadDashboard();
+  }
